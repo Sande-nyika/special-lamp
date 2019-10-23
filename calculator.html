@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CALCULATOR</title>
+</head>
+<style type="text/css">
+	body{
+		display: flex;
+		align-content: center;
+		align-items: center;
+		background: teal;
+
+	}
+	#calc-bdy{
+		margin: 0px auto;
+		height: 430px;
+		border: 3px solid black;
+		width: 300px;
+		background: black;
+	}
+	#process{
+		width: 98.5%;
+		height: 200px;
+		font-size: 50px;
+		background: lightgrey;
+		text-align: right;
+	}
+	button{
+		width: 72px;
+		height: 30px;
+		border: 1px solid black;
+		border-radius: 5px
+	}
+	#pads{
+		background: grey;
+		height: 100%
+	}
+	#choose-color{
+	    position:absolute;
+		z-index:3;
+		text-align:center;
+		background:grey;
+		width:300px;
+		height:200px;
+		display:none;
+		animation:anim 2s linear ease-in;
+		
+	
+	}
+	#choose-color h1{
+	    text-decoration:underline;
+		color:blue
+	}
+	@keyframes anim{
+	    from{transform:scale(0.5)}
+		to{transform:scale(1)}
+	}
+	#show{
+	    color:white;
+	    cursor:pointer;
+		width:100%
+		
+	}
+    .color{
+	    border:3px solid black;
+		margin-top:20px;
+		position:relative;
+		cursor:pointer;
+		border-radius:8px
+		position:absolute;
+		width:80px;
+		margin:left:10px;
+		margin-top:20px
+		
+	}	
+	#f-chooser{
+	    
+	}
+</style>
+<body>
+    <div id="calc-bdy">
+	    <span id='show'><img id="image" src='MISHY.png' width="50"></img> TAP TO CHANGE COLOR/Photo</span>
+	    <div id='choose-color'>
+		    <h1>CHOOSE COLOR</h1>
+			<div id='color-con'>
+			   <span style="background:red;width:80px;position:absolute" class='color'>red</span>
+			   <span style="background:green"  class='color'>green</span>
+			   <span style="background:yellow" class='color'>yellow</span>
+			   <span style="background:blue" class='color'>blue</span>
+			   <span style="background:purple" class='color'>purple</span>
+			   <span style="background:orange" class='color'>orange</span>
+			   <br>
+			   <span style="background:white" class='color'>white</span>
+			   <span style="background:lime" class='color'>lime</span>
+			   <span style="background:teal" class='color'>teal</span>
+			   <span style="background:brown" class='color'>brown</span>
+			</div>
+			<p style="text-decoration:underline;font-weight:bolder">Change Picture</p>
+		    <input type='file' id="f-chooser"></input>
+		</div>
+    	<div id="calc">
+    		<input type="text" id="process"  placeholder="ANSWER">
+    		<div id="pads">
+    			<button id="btn7" onclick="process.value +=this.value" value="7" >7</button>
+    			<button id="btn8" onclick="process.value +=this.value" value="8" >8</button>
+    			<button id="btn9" onclick="process.value +=this.value" value="9" >9</button>
+    			<button class="prtr"onclick="process.value +=this.value" value="*" >X</button>
+    			<br>
+    			<button id="btn4" onclick="process.value +=this.value" value="4" >4</button>
+    			<button id="btn5" onclick="process.value +=this.value" value="5" >5</button>
+    			<button id="btn6" onclick="process.value +=this.value"value="6" >6</button>
+    			<button class="prtr" onclick="process.value +=this.value" value="/" >/</button>
+    			<br>
+    			<button id="btn1" onclick="process.value +=this.value" value="1" >1</button>
+    			<button id="btn2" onclick="process.value +=this.value" value="2" >2</button>
+    			<button id="btn3" onclick="process.value +=this.value" value="3" >3</button>
+    			<button class="prtr" onclick="process.value +=this.value" value="-" >-</button>
+    			<br>
+    			<button id="btn-" onclick="process.value +=this.value" value="0" >0</button>
+    			<button id="btn-" onclick="process.value +=this.value" value="." >.</button>
+    			<button id="btn-" onclick="process.value +=this.value" value="00" >00</button>
+    			<button id="btn-" onclick="process.value=process.value.toString().slice(0,-1);" >DEL</button>
+    			<br>
+    			<button id="btn-" onclick=" if(process.value===undefined){process.value=0}; process.value =eval(process.value) ; "  >=</button>
+    			<button class="prtr" onclick="process.value +=this.value" value="+" >+</button>
+    			<button id="btn-" onclick="process.value ='' "  ><b>C</b></button>
+    			<button id="btn-" onclick="process.value =Math.sqrt(process.value);if (isNaN(process.value)) {process.value=0} ">SQRT</button>
+    			<br>
+
+    		</div>
+    	</div>
+    </div>
+</body>
+<script type="text/javascript"> 
+	
+
+    if(process.value===undefined){
+	    process.value=0
+	}
+    var fr=new FileReader()
+	
+	document.getElementById('f-chooser').addEventListener('input',changePic);
+	function changePic(event){
+	    var input = event.target
+		var image=document.getElementById('image');
+		fr.onload=(e)=>{
+	        var soc= fr.result;
+	        image.src=soc
+			localStorage.setItem('image',image.src);
+	    }
+		fr.readAsDataURL(input.files[0]);
+		document.getElementById('choose-color').style.display='none'
+	}
+	
+    var show =document.getElementById('show')
+	show.addEventListener('click',()=>{
+	    document.getElementById('choose-color').style.display='block'     
+	})
+    var clr=document.getElementsByClassName('color')
+	for(i=0;i < clr.length;i++){
+	    var nn=clr[i]
+	    setInterval(()=>{
+		nn.style.setProperty('background',this.innerHTML);
+		},100)
+	    
+		clr[i].addEventListener('click',changeBg)
+	}
+	function changeBg(){
+	    document.body.style.setProperty('background',this.innerHTML);
+		document.getElementById('choose-color').style.display='none'
+	}
+   	
+	var btns=document.getElementsByTagName('button');
+	for (var i = 0; i < btns.length; i++) {
+		btns[i].addEventListener('mouseover',addAttribute)
+	}
+	function addAttribute() {
+		this.setAttribute('title',this.innerText);
+		for (var i = 0; i < btns.length; i++) {
+		btns[i].style.background=''
+
+	        }
+
+		var bgc= ['red','blue','purple','magenta','yellow','green','teal','orange']
+		var counter=Math.floor((Math.random()*bgc.length))
+		this.style.setProperty('background',bgc[counter]);
+		document.getElementById('calc-bdy').style.background=this.style.background
+	}
+    var image=document.getElementById('image');
+	window.onload=()=>{
+		image.src=localStorage.getItem('image')
+	}
+	console.log(localStorage)
+</script>
+</html>
